@@ -5,7 +5,7 @@ Functionality for parsing and validating addresses.
 
 The following configuration is recommended, but it's possible to work with different configuration options.
 
- - Add the submodule: `git submodule add CLONE_URL`
+ - Add the submodule to relative path `src/packages/YipAddress`: `git submodule add CLONE_URL src/packages/YipAddress`
  - Configure `git status` to print out submodule changes in its summary: `git config status.submodulesummary 1`
  - Configure Git to prevent publishing changes to the main module if there are unpublished submodule changes: `git config push.recurseSubmodules check`
  - Configure Git diffs for submodules to show log of changes to those submodules: `git config diff.submodule log`
