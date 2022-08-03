@@ -6,6 +6,12 @@ export type Address = {
     aliasMap: AliasMap
 }
 
+export const emptyAddress: Address = {
+    rawAddress: "",
+    addressLines: [],
+    aliasMap: {}
+}
+
 /**
  * Each line of an address can have any number of alises.
  */
