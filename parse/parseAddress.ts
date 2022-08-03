@@ -8,7 +8,9 @@ export function parseStrToAddress(rawAddress: string) : Address{
 export function parseStrToAddressWithAlias(rawAddress: string,
     aliasProducer: (line: string, index: number) => string) : Address{
 
-        const addressLines = splitNewlines(rawAddress)
+        const rawLines = splitNewlines(rawAddress)
+        const trimmedLines = rawLines.map(s => s.trim())
+        const addressLines = trimmedLines.filter(s => !!s)
         const aliasMap: AliasMap = {}
 
         addressLines.forEach((line, index) => {
