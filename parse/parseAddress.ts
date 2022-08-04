@@ -21,7 +21,6 @@ export function parseStrToAddressWithAlias(rawAddress: string,
         })
 
         const address = {
-            rawAddress,
             addressLines,
             aliasMap
         }
