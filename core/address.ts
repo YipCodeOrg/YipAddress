@@ -1,13 +1,11 @@
 import _ from "lodash"
 
 export type Address = {
-    rawAddress: string,
     addressLines: string[],
     aliasMap: AliasMap
 }
 
 export const emptyAddress: Address = {
-    rawAddress: "",
     addressLines: [],
     aliasMap: {}
 }
