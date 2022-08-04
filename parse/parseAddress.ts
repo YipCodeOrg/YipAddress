@@ -1,6 +1,8 @@
 import { Address, AliasMap } from "../core/address";
 import { splitNewlines } from "../util/misc";
 
+export type ParseOptions = {}
+
 export function parseStrToAddress(rawAddress: string) : Address{
     return parseStrToAddressWithAlias(rawAddress, (_, i) => "line" + (i+1))
 }
