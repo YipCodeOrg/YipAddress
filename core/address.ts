@@ -10,6 +10,19 @@ export const emptyAddress: Address = {
     aliasMap: {}
 }
 
+/** 
+ * Creates a new object which is a shallow copy of the original except for the addressLines
+ * The addressLines are deep copied & the line at the given index is replaced with the given content
+*/
+export function shallowCopyUpdateLine(address: Address, index: number, content: string) : Address{
+    const addressLinesCopy = [...address.addressLines]
+    addressLinesCopy[index] = content
+    return {
+        addressLines: addressLinesCopy,
+        aliasMap: address.aliasMap
+    }
+}
+
 /**
  * Each line of an address can have any number of alises.
  */
