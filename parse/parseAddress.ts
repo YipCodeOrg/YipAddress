@@ -20,7 +20,7 @@ export function parseStrToAddressWithAlias(rawAddress: string,
             aliasMap[alias] = index
         })
 
-        const address = {
+        const address: Address = {
             addressLines,
             aliasMap
         }
