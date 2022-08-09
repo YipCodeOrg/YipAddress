@@ -1,13 +1,53 @@
 import _ from "lodash"
+import { isSimpleProperty, isStringArray } from "../../../util/typePredicates"
 
 export type Address = {
     addressLines: string[],
     aliasMap: AliasMap
 }
 
+/**
+ * Checks that the basic structure of the object conforms to the address type.
+ * Note: this does not validate the address. It just checks the strucutre and types.
+ */
+export function isAddress(obj: any): obj is Address{
+    if(!obj){        
+        return false
+    }
+    const {addressLines, aliasMap} = obj
+    return isStringArray(addressLines) && isAliasMap(aliasMap)
+}
+
+/**
+ * Each line of an address can have any number of alises.
+ */
+export type AliasMap = { [id: string] : number}
+
 export const emptyAddress: Address = {
     addressLines: [],
     aliasMap: {}
+}
+
+export function isAliasMap(obj: any): obj is AliasMap{
+    if(!obj){
+        return false
+    }
+    const symbolProps = Object.getOwnPropertySymbols(obj)
+    if(symbolProps.length > 0){
+        console.log("Symbol props")
+        return false
+    }
+    for(var prop of Object.getOwnPropertyNames(obj)){
+        if(!isSimpleProperty(obj, prop)){
+            console.log("Not simple prop")
+            return false
+        }
+        const val = obj[prop]
+        if(!Number.isFinite(val)){
+            return false
+        }
+    }
+    return true
 }
 
 /** 
@@ -22,11 +62,6 @@ export function shallowCopyUpdateLine(address: Address, index: number, content: 
         aliasMap: address.aliasMap
     }
 }
-
-/**
- * Each line of an address can have any number of alises.
- */
-export type AliasMap = { [id: string] : number}
 
 
 export function getLine(address: Address, alias: string) : string{
