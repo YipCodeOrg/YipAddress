@@ -21,10 +21,6 @@ describe("parseStrToAddress", () => {
             parsedAddress = parseStrToAddress(rawAddress)
         })
 
-        it("preserves input address", () => {
-            expect(parsedAddress.rawAddress).toBe(rawAddress)
-        })
-
         it("has expected lines", () => {
             expect(parsedAddress.addressLines).toEqual(expectedLines)
         })
