@@ -3,6 +3,11 @@ export type ValidationResult = {
     warnings: string[]
 }
 
+export const EmptyValidationResult: ValidationResult = {
+    errors: [],
+    warnings: []
+}
+
 export function hasErrors(r: ValidationResult | null) {
     if(r === null){
         return false
