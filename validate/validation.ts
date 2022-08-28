@@ -16,7 +16,7 @@ export const EmptyValidationResult: ValidationResult = {
     warnings: []
 }
 
-export function newEmptyValidationResult(){
+export function newEmptyValidationResult(): ValidationResult{
     return {
         errors: [],
         warnings: []
