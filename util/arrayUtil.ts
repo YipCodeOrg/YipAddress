@@ -38,6 +38,37 @@ export function sortByKeyFunction<TKey, TData>(sortArray: TKey[], dataArray: TDa
     return resultArray
 }
 
+export function inverseIndexDuplicatesMap<TKey, TData>(a: TData[], keyMapper: (data: TData) => TKey) : Map<TKey, Set<number>>{
+    const inverseSetMap = inverseIndexSetMap(a, keyMapper)
+    const dupesMap = new Map<TKey, Set<number>>()
+    for(var [k, s] of inverseSetMap){
+        if(s.size > 1){
+            dupesMap.set(k, s)
+        }
+    }
+    return dupesMap
+}
+
+export function inverseIndexSetMap<TKey, TData>(a: TData[], keyMapper: (data: TData) => TKey) : Map<TKey, Set<number>>{
+    const keyDataIndexMap = new Map<TKey, Set<number>>()
+
+    for (let index = 0; index < a.length; index++) {
+        const data = a[index];
+        if(data === undefined){
+            throw new Error("Unexpected undefined data encountered during map building");
+        }
+        const key = keyMapper(data)
+        const val = keyDataIndexMap.get(key)
+        if(val !== undefined){
+             val.add(index)           
+        } else{
+            keyDataIndexMap.set(key, new Set([index]))
+        }
+    }
+
+    return keyDataIndexMap
+}
+
 export function inverseIndexMap<TKey, TData>(a: TData[], keyMapper: (data: TData) => TKey) : Map<TKey, number>{
     const keyDataIndexMap = new Map<TKey, number>()
 

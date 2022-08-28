@@ -1,4 +1,4 @@
-import { inverseDataMap, inverseIndexMap, sortByKeyFunction } from "../../util/arrayUtil"
+import { inverseDataMap, inverseIndexDuplicatesMap, inverseIndexMap, inverseIndexSetMap, sortByKeyFunction } from "../../util/arrayUtil"
 
 describe("sortByKeyFunction", () => {    
     function f(data: {id: number, name: string}){return data.id}
@@ -156,6 +156,76 @@ describe("inverseDataMap", () => {
 
                 it("throws error", () => {                    
                     expect(() => inverseDataMap(a, f)).toThrow(Error)
+                })
+        })
+    })
+})
+
+describe("inverseIndexDuplicatesMap", () => {
+    function f(data: {id: number, name: string}){return data.name}
+    
+    type TestData = {id: number, name: string}
+
+    type TestInput = {
+        a: TestData[]
+        desc: string,
+        expected: [string, Set<number>][]
+    }
+    
+    describe("happy", () => {
+        describe.each<TestInput>([
+            {
+                a: [{id: 1, name: "One"}, {id: 2, name: "Two"}, {id: 3, name: "One"}],
+                desc: "Multiple values",
+                expected: [["One", new Set([0,2])]]
+            }
+        ])(
+            "$desc", ({a, expected}) => {
+
+                it("has expected mappings", () => {
+                    //Arrange
+                    const expectedMap = new Map<string, Set<number>>(expected)
+                    
+                    //Act
+                    const actual = inverseIndexDuplicatesMap(a, f)
+
+                    //Assert
+                    expect(actual).toEqual(expectedMap)
+                })
+        })
+    })
+})
+
+describe("inverseIndexSetMap", () => {
+    function f(data: {id: number, name: string}){return data.name}
+    
+    type TestData = {id: number, name: string}
+
+    type TestInput = {
+        a: TestData[]
+        desc: string,
+        expected: [string, Set<number>][]
+    }
+    
+    describe("happy", () => {
+        describe.each<TestInput>([
+            {
+                a: [{id: 1, name: "One"}, {id: 2, name: "Two"}, {id: 3, name: "One"}],
+                desc: "Multiple values",
+                expected: [["One", new Set([0,2])], ["Two", new Set([1])]]
+            }
+        ])(
+            "$desc", ({a, expected}) => {
+
+                it("has expected mappings", () => {
+                    //Arrange
+                    const expectedMap = new Map<string, Set<number>>(expected)
+                    
+                    //Act
+                    const actual = inverseIndexSetMap(a, f)
+
+                    //Assert
+                    expect(actual).toEqual(expectedMap)
                 })
         })
     })
