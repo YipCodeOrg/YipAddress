@@ -73,6 +73,10 @@ export function getLine(address: Address, alias: string) : string{
     throw new Error("Error getting line")
 }
 
+export function printAddress(address: Address, lineSeparator: string){
+    return address.addressLines.join(lineSeparator)
+}
+
 enum AliasIndexError{
     None,
     NoLineFound,
