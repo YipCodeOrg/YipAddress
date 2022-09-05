@@ -2,7 +2,7 @@ import { inverseIndexDuplicatesMap } from "../util/arrayUtil"
 import { addValidationMessage, newEmptyValidationResult, ValidationResult, ValidationSeverity } from "./validation"
 
 export function validateNameNotBlank<T>(t: T, nameField: (t: T) => string | null | undefined): ValidationResult{
-    return validateStringNotBlank(t, nameField, "name")
+    return validateStringNotBlank(t, nameField, "Name")
 }
 
 export function validateStringNotBlank<T>(t: T, field: (t: T) => string | null | undefined, fieldDesc: string): ValidationResult{
