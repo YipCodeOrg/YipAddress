@@ -42,12 +42,20 @@ export enum ValidationSeverity{
     WARNING
 }
 
-export function addValidationMessage(msg: string, r: ValidationResult, severity: ValidationSeverity){
+export function printMessages(r: ValidationResult, severity: ValidationSeverity){
+    return processTargetArray(r, severity, a => a.join("; "))
+}
+
+export function addValidationMessage(msg: string, r: ValidationResult, severity: ValidationSeverity): void{
+    processTargetArray(r, severity, a => a.push(msg))
+}
+
+function processTargetArray<T>(r: ValidationResult, severity: ValidationSeverity, op: (arr: string[]) => T) {
     const targetArray = severity === ValidationSeverity.ERROR ? r.errors : 
         severity === ValidationSeverity.WARNING ? r.warnings : null
     if(targetArray !== null){
-        targetArray.push(msg)
+        return op(targetArray)
     } else {
         throw new Error("Unkonwn severity")
-    }            
+    }
 }
