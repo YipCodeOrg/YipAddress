@@ -36,3 +36,18 @@ export function hasWarnings(r: ValidationResult | null) {
     }
     return r.warnings.length > 0
 }
+
+export enum ValidationSeverity{
+    ERROR,
+    WARNING
+}
+
+export function addValidationMessage(msg: string, r: ValidationResult, severity: ValidationSeverity){
+    const targetArray = severity === ValidationSeverity.ERROR ? r.errors : 
+        severity === ValidationSeverity.WARNING ? r.warnings : null
+    if(targetArray !== null){
+        targetArray.push(msg)
+    } else {
+        throw new Error("Unkonwn severity")
+    }            
+}
