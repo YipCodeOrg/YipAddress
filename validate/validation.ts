@@ -11,7 +11,7 @@ export function copyValidationResult({errors, warnings}: ValidationResult)
     }
 }
 
-export const EmptyValidationResult: ValidationResult = {
+export const emptyValidationResult: ValidationResult = {
     errors: [],
     warnings: []
 }
@@ -48,6 +48,15 @@ export function printMessages(r: ValidationResult, severity: ValidationSeverity)
 
 export function addValidationMessage(msg: string, r: ValidationResult, severity: ValidationSeverity): void{
     processTargetArray(r, severity, a => a.push(msg))
+}
+
+export function mergeValidations(rs: ValidationResult[]): ValidationResult{
+    
+    const result = newEmptyValidationResult()
+    result.errors = result.errors.concat(...rs.map(r => r.errors))
+    result.warnings = result.warnings.concat(...rs.map(r => r.warnings))
+
+    return result
 }
 
 function processTargetArray<T>(r: ValidationResult, severity: ValidationSeverity, op: (arr: string[]) => T) {
