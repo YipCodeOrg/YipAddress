@@ -24,10 +24,13 @@ itemValidations: TIV[], itemValidationField: (v: TIV) => ValidationResult, sever
 export function validateUnique<T, TF, TIV>(validation: ValidationResult, arr: T[], field: (t: T) => TF, 
 itemValidations: TIV[], itemValidationField: (v: TIV) => ValidationResult, severity: ValidationSeverity, fieldDesc: string, print: (t: TF) => string){
     const dupes = inverseIndexDuplicatesMap(arr, field)
-    for(let [key, set] of dupes.entries()){
-        const msg = `Duplicate ${fieldDesc} '${print(key)}' found at indices: ${Array.of(set.values).join(", ")}`
+    for(let [key, numSet] of dupes.entries()){
+        const indicesStr = printIndices(numSet)
+        let printed = print(key)
+        const msg = printed !== "" ? `Duplicate ${fieldDesc} '${printed}' found at indices: ${indicesStr}` :
+            `Duplicate blank ${fieldDesc} found at indices: ${indicesStr}`
         addValidationMessage(msg, validation, severity)
-        for(let i of set){
+        for(let i of numSet){
             const itemValidation = itemValidations[i]
             if(itemValidation !== undefined){
                 const fieldValidation = itemValidationField(itemValidation)
@@ -35,4 +38,9 @@ itemValidations: TIV[], itemValidationField: (v: TIV) => ValidationResult, sever
             }
         }        
     }
+}
+
+function printIndices(numSet: Set<number>) : string{
+    const arr = Array.from(numSet.values())
+    return arr.map(i => i.toString()).join(", ")
 }
