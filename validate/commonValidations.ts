@@ -47,35 +47,34 @@ function printIndices(numSet: Set<number>) : string{
 
 /** Maps input array to array of validations and simultaneously collects top-level validation messages.*/
 export function validateAndCollectItems<T, TValid>(ts: T[], validate: (t: T) => TValid,
-    getResult: (v: TValid) => ValidationResult, topLevel: ValidationResult): TValid[]{
+    getResult: (v: TValid) => ValidationResult, topLevel: ValidationResult, objDescriptor: string): TValid[]{
         const itemValidations = ts.map(validate)
         const itemValidationResults = itemValidations.map(getResult)
 
         itemValidationResults.forEach((v, i) => {
             if(hasErrors(v)){
-                topLevel.errors.push(`One or more validation errors at index ${i}`)
+                topLevel.errors.push(`One or more validation errors at position ${i} of the ${objDescriptor} list`)
             }
             if(hasWarnings(v)){
-                topLevel.warnings.push(`One or more validation errors at index ${i}`)
+                topLevel.warnings.push(`One or more validation warnings at position ${i} of the ${objDescriptor} list`)
             }
         })
 
         return itemValidations
 }
 
-
 export function validateItemResultArray<T, TFieldValid>(ts: T[], validate: (t: T) => ItemValidationResult<TFieldValid>,
-validateTopLevel: TopLevelArrayValidationFunction<T, ItemValidationResult<TFieldValid>>)
+validateTopLevel: TopLevelArrayValidationFunction<T, ItemValidationResult<TFieldValid>>, objDescriptor: string)
 : ArrayValidationResult<ItemValidationResult<TFieldValid>>{
-    return validateArray(ts, validate, v => v.flatValidation, validateTopLevel)
+    return validateArray(ts, validate, v => v.flatValidation, validateTopLevel, objDescriptor)
 }
 
 export function validateArray<T, TValid>(ts: T[], validate: (t: T) => TValid,
-getFlatValidation: (v: TValid) => ValidationResult, validateTopLevel: TopLevelArrayValidationFunction<T, TValid>)
+getFlatValidation: (v: TValid) => ValidationResult, validateTopLevel: TopLevelArrayValidationFunction<T, TValid>, objDescriptor: string)
 : ArrayValidationResult<TValid>{
     const topValidationResult = newEmptyValidationResult()
     const itemValidations = validateAndCollectItems(ts, validate,
-        getFlatValidation, topValidationResult)
+        getFlatValidation, topValidationResult, objDescriptor)
     validateTopLevel(topValidationResult, ts, itemValidations)
     return {
         topValidationResult,
@@ -93,4 +92,3 @@ export function liftFieldValidationToItemValidation<T, TFieldValid>(fieldValidat
         }
     }
 }
-
