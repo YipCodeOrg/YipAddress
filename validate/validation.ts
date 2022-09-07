@@ -1,6 +1,13 @@
+import { isStringArray } from "../../../util/typePredicates"
+
 export type ValidationResult = {
     errors: string[],
     warnings: string[]
+}
+
+export function isValidationResult(obj: any): obj is ValidationResult{
+    const { errors, warnings } = obj
+    return isStringArray(errors) && isStringArray(warnings)
 }
 
 export function copyValidationResult({errors, warnings}: ValidationResult)
@@ -57,6 +64,12 @@ export function mergeValidations(rs: ValidationResult[]): ValidationResult{
     result.warnings = result.warnings.concat(...rs.map(r => r.warnings))
 
     return result
+}
+
+export function collectValidations(obj: any): ValidationResult{
+    const validations = Object.keys(obj).map(k => obj[k])
+        .filter(isValidationResult)
+    return mergeValidations(validations)
 }
 
 function processTargetArray<T>(r: ValidationResult, severity: ValidationSeverity, op: (arr: string[]) => T) {
