@@ -1,5 +1,5 @@
 import { inverseIndexDuplicatesMap } from "../util/arrayUtil"
-import { addValidationMessage, hasErrors, hasWarnings, newEmptyValidationResult, ValidationResult, ValidationSeverity } from "./validation"
+import { addValidationMessage, ArrayValidationResult, collectValidations, hasErrors, hasWarnings, ItemValidationResult, newEmptyValidationResult, TopLevelArrayValidationFunction, ValidationResult, ValidationSeverity } from "./validation"
 
 export function validateNameNotBlank<T>(t: T, nameField: (t: T) => string | null | undefined): ValidationResult{
     return validateStringNotBlank(t, nameField, "Name")
@@ -62,3 +62,35 @@ export function validateAndCollectItems<T, TValid>(ts: T[], validate: (t: T) => 
 
         return itemValidations
 }
+
+
+export function validateItemResultArray<T, TFieldValid>(ts: T[], validate: (t: T) => ItemValidationResult<TFieldValid>,
+validateTopLevel: TopLevelArrayValidationFunction<T, ItemValidationResult<TFieldValid>>)
+: ArrayValidationResult<ItemValidationResult<TFieldValid>>{
+    return validateArray(ts, validate, v => v.flatValidation, validateTopLevel)
+}
+
+export function validateArray<T, TValid>(ts: T[], validate: (t: T) => TValid,
+getFlatValidation: (v: TValid) => ValidationResult, validateTopLevel: TopLevelArrayValidationFunction<T, TValid>)
+: ArrayValidationResult<TValid>{
+    const topValidationResult = newEmptyValidationResult()
+    const itemValidations = validateAndCollectItems(ts, validate,
+        getFlatValidation, topValidationResult)
+    validateTopLevel(topValidationResult, ts, itemValidations)
+    return {
+        topValidationResult,
+        itemValidations
+    }
+}
+
+export function liftFieldValidationToItemValidation<T, TFieldValid>(fieldValidate: (t: T) => TFieldValid)
+: (t: T) => ItemValidationResult<TFieldValid>{
+    return (t) => {
+        const fieldValidations = fieldValidate(t)
+        return {
+            flatValidation: collectValidations(fieldValidations),
+            fieldValidations
+        }
+    }
+}
+

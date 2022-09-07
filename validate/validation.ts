@@ -11,9 +11,12 @@ export type ArrayValidationResult<TItemValid> = {
 }
 
 export type ItemValidationResult<TFieldValid> = {
-    flatValidations: ValidationResult,
+    flatValidation: ValidationResult,
     fieldValidations: TFieldValid
 }
+
+export type TopLevelArrayValidationFunction<T, TValid> = (topValidationResult: ValidationResult, ts: T[], 
+    itemValidations: TValid[]) => void
 
 export function isValidationResult(obj: any): obj is ValidationResult{
     const { errors, warnings } = obj
