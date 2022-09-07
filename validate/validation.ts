@@ -5,6 +5,16 @@ export type ValidationResult = {
     warnings: string[]
 }
 
+export type ArrayValidationResult<TItemValid> = {
+    topValidationResult: ValidationResult,
+    itemValidations: TItemValid[]
+}
+
+export type ItemValidationResult<TFieldValid> = {
+    flatValidations: ValidationResult,
+    fieldValidations: TFieldValid
+}
+
 export function isValidationResult(obj: any): obj is ValidationResult{
     const { errors, warnings } = obj
     return isStringArray(errors) && isStringArray(warnings)
