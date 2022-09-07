@@ -1,5 +1,5 @@
 import { inverseIndexDuplicatesMap } from "../util/arrayUtil"
-import { addValidationMessage, newEmptyValidationResult, ValidationResult, ValidationSeverity } from "./validation"
+import { addValidationMessage, hasErrors, hasWarnings, newEmptyValidationResult, ValidationResult, ValidationSeverity } from "./validation"
 
 export function validateNameNotBlank<T>(t: T, nameField: (t: T) => string | null | undefined): ValidationResult{
     return validateStringNotBlank(t, nameField, "Name")
@@ -43,4 +43,22 @@ itemValidations: TIV[], itemValidationField: (v: TIV) => ValidationResult, sever
 function printIndices(numSet: Set<number>) : string{
     const arr = Array.from(numSet.values())
     return arr.map(i => i.toString()).join(", ")
+}
+
+/** Maps input array to array of validations and simultaneously collects top-level validation messages.*/
+export function validateAndCollectItems<T, TValid>(ts: T[], validate: (t: T) => TValid,
+    getResult: (v: TValid) => ValidationResult, topLevel: ValidationResult): TValid[]{
+        const itemValidations = ts.map(validate)
+        const itemValidationResults = itemValidations.map(getResult)
+
+        itemValidationResults.forEach((v, i) => {
+            if(hasErrors(v)){
+                topLevel.errors.push(`One or more validation errors at index ${i}`)
+            }
+            if(hasWarnings(v)){
+                topLevel.warnings.push(`One or more validation errors at index ${i}`)
+            }
+        })
+
+        return itemValidations
 }
