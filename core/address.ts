@@ -50,19 +50,23 @@ export function isAliasMap(obj: any): obj is AliasMap{
     return true
 }
 
+export function shallowCopyUpdateLine(address: Address, index: number, content: string) : Address{
+    return(shallowCopyUpdateLines(address, a => {a[index] = content}))
+}
+
 /** 
  * Creates a new object which is a shallow copy of the original except for the addressLines
  * The addressLines are deep copied & the line at the given index is replaced with the given content
 */
-export function shallowCopyUpdateLine(address: Address, index: number, content: string) : Address{
+export function shallowCopyUpdateLines(address: Address, update: (lines: string[]) => void)
+: Address{        
     const addressLinesCopy = [...address.addressLines]
-    addressLinesCopy[index] = content
+    update(addressLinesCopy)
     return {
         addressLines: addressLinesCopy,
         aliasMap: address.aliasMap
     }
 }
-
 
 export function getLine(address: Address, alias: string) : string{
     const lineOrError = getLineOrError(address, alias)
