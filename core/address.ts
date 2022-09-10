@@ -81,6 +81,29 @@ export function printAddress(address: Address, lineSeparator: string){
     return address.addressLines.join(lineSeparator)
 }
 
+export function inverseAliasMap(address: Address) : Map<number, Set<string>>{
+    const map = new Map<number, Set<string>>()
+    const aliasMap = address.aliasMap
+    
+    for(let key in aliasMap){
+        const index = aliasMap[key]
+        if(index !== undefined){
+            if(!map.has(index)){
+                map.set(index, new Set<string>())
+            }
+            const set = map.get(index)
+            if(set !== undefined){
+                set.add(key)
+            } else {
+                throw new Error("Unexpected undefined set encountered");
+                
+            }
+        }
+    }
+    
+    return map
+}
+
 enum AliasIndexError{
     None,
     NoLineFound,
