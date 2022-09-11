@@ -23,6 +23,14 @@ export function isAddress(obj: any): obj is Address{
  */
 export type AliasMap = { [id: string] : number}
 
+export function aliasMapFromList(list: [string, number][]): AliasMap{
+    const aliasMap: AliasMap = {}
+    for(let [alias, index] of list){
+        aliasMap[alias] = index
+    }
+    return aliasMap
+}
+
 export const emptyAddress: Address = {
     addressLines: [],
     aliasMap: {}
