@@ -23,6 +23,10 @@ export function isAddress(obj: any): obj is Address{
  */
 export type AliasMap = { [id: string] : number}
 
+export function removeAlias(map: AliasMap, alias: string){
+    delete map[alias]
+}
+
 export function aliasMapFromList(list: [string, number][]): AliasMap{
     const aliasMap: AliasMap = {}
     for(let [alias, index] of list){
