@@ -1,4 +1,4 @@
-import {KeyboardEvent} from "react"
+import {ChangeEvent, KeyboardEvent} from "react"
 
 export function handleEnterKeyPress<T = Element>(f: () => void){
     return handleKeyPress<T>({Enter: f})
@@ -14,5 +14,12 @@ export function handleKeyPress<T = Element>(map: KeyPressMap){
         if(handler !== undefined){
             handler()
         }
+    }
+}
+
+export function handleValueChange<T extends {value: string}>(f: (s: string) => void){
+    return function(e: ChangeEvent<T>){
+        const inputValue = e.target.value
+        f(inputValue)
     }
 }
