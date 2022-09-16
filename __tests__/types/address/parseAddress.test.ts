@@ -1,5 +1,5 @@
-import { Address } from "../../core/address"
-import { parseStrToAddress } from "../../parse/parseAddress"
+import { Address } from "../../../types/address/address"
+import { parseStrToAddress } from "../../../types/address/parseAddress"
 
 describe("parseStrToAddress", () => {
     describe.each([{rawAddress: "", rawAddressDesc: "empty", expectedLines: [], expectedAliasMap: {}},

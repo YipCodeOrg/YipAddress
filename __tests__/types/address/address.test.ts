@@ -1,4 +1,4 @@
-import { Address, isAddress } from "../../core/address"
+import { Address, isAddress } from "../../../types/address/address"
 
 describe("isAddress", () => {
     

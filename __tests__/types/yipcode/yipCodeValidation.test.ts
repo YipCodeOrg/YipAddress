@@ -1,4 +1,4 @@
-import { isValidYipCode } from "../../validate/yipCodeValidation"
+import { isValidYipCode } from "../../../types/yipcode/yipCodeValidation"
 
 describe("isValidYipCode", () => {
 

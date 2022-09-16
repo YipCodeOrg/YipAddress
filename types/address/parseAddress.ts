@@ -1,5 +1,5 @@
-import { Address, AliasMap } from "../core/address";
-import { splitNewlines } from "../util/misc";
+import { Address, AliasMap } from "./address";
+import { splitNewlines } from "../../util/misc";
 
 export type ParseOptions = {}
 
