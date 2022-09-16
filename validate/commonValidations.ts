@@ -69,6 +69,12 @@ validateTopLevel: TopLevelArrayValidationFunction<T, ItemValidationResult<TField
     return validateArray(ts, validate, v => v.flatValidation, validateTopLevel, objDescriptor)
 }
 
+export function validateBasicArray<T>(ts: T[], validate: (t: T) => ValidationResult,
+validateTopLevel: TopLevelArrayValidationFunction<T, ValidationResult>, objDescriptor: string)
+: ArrayValidationResult<ValidationResult>{
+    return validateArray(ts, validate, v => v, validateTopLevel, objDescriptor)
+}
+
 export function validateArray<T, TValid>(ts: T[], validate: (t: T) => TValid,
 getFlatValidation: (v: TValid) => ValidationResult, validateTopLevel: TopLevelArrayValidationFunction<T, TValid>, objDescriptor: string)
 : ArrayValidationResult<TValid>{
