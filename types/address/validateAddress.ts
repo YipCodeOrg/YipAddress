@@ -1,4 +1,4 @@
-import { validateBasicArray, validateStringNotBlank } from "../../validate/commonValidations"
+import { liftFieldValidationToItemValidation, validateBasicArray, validateStringNotBlank } from "../../validate/commonValidations"
 import { ArrayValidationResult, ItemValidationResult, ValidationResult } from "../../validate/validation"
 import { Address } from "./address"
 
@@ -8,6 +8,8 @@ export type AddressFieldValidationResult = {
 
 export type AddressValidationResult = ItemValidationResult<AddressFieldValidationResult>
 
+export const validateAddress: (a: Address) => AddressValidationResult
+     = liftFieldValidationToItemValidation(fieldValidateAddress)
 
 function fieldValidateAddress(ad: Address): AddressFieldValidationResult{
     return {
