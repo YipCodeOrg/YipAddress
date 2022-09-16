@@ -5,22 +5,32 @@ export type ValidationResult = {
     warnings: string[]
 }
 
-export type ArrayValidationResult<TItemValid> = {
+export type TopValidationResultContainer = {
     topValidationResult: ValidationResult,
-    itemValidations: TItemValid[]
 }
 
-export type ItemValidationResult<TFieldValid> = {
-    flatValidation: ValidationResult,
+export type ArrayValidationResult<TItemValid> = {    
+    itemValidations: TItemValid[]
+} & TopValidationResultContainer
+
+export type ItemValidationResult<TFieldValid> = {    
     fieldValidations: TFieldValid
-}
+} & TopValidationResultContainer
 
 export type TopLevelArrayValidationFunction<T, TValid> = (topValidationResult: ValidationResult, ts: T[], 
     itemValidations: TValid[]) => void
 
 export function isValidationResult(obj: any): obj is ValidationResult{
+    if(!obj){
+        return false
+    }
     const { errors, warnings } = obj
     return isStringArray(errors) && isStringArray(warnings)
+}
+
+export function isTopLevelValidationResultContainer(obj: any): obj is TopValidationResultContainer{
+    const { topValidationResult } = obj
+    return isValidationResult(topValidationResult)
 }
 
 export function copyValidationResult({errors, warnings}: ValidationResult)
@@ -79,10 +89,15 @@ export function mergeValidations(rs: ValidationResult[]): ValidationResult{
     return result
 }
 
+/** Goes through all properties of the object and merges together any validation results it finds.
+ * Properties that are validation results are included in the merge, as are validation results that
+ * are included inside top-level validation result containers.
+*/
 export function collectValidations(obj: any): ValidationResult{
-    const validations = Object.keys(obj).map(k => obj[k])
-        .filter(isValidationResult)
-    return mergeValidations(validations)
+    const keys = Object.keys(obj)
+    const simpleValidations = keys.map(k => obj[k]).filter(isValidationResult)
+    const containerValidations = keys.map(k => obj[k]).filter(isTopLevelValidationResultContainer).map(c => c.topValidationResult)
+    return mergeValidations([...containerValidations, ...simpleValidations])
 }
 
 function processTargetArray<T>(r: ValidationResult, severity: ValidationSeverity, op: (arr: string[]) => T) {

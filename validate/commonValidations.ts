@@ -66,7 +66,7 @@ export function validateAndCollectItems<T, TValid>(ts: T[], validate: (t: T) => 
 export function validateItemResultArray<T, TFieldValid>(ts: T[], validate: (t: T) => ItemValidationResult<TFieldValid>,
 validateTopLevel: TopLevelArrayValidationFunction<T, ItemValidationResult<TFieldValid>>, objDescriptor: string)
 : ArrayValidationResult<ItemValidationResult<TFieldValid>>{
-    return validateArray(ts, validate, v => v.flatValidation, validateTopLevel, objDescriptor)
+    return validateArray(ts, validate, v => v.topValidationResult, validateTopLevel, objDescriptor)
 }
 
 export function validateBasicArray<T>(ts: T[], validate: (t: T) => ValidationResult,
@@ -93,7 +93,7 @@ export function liftFieldValidationToItemValidation<T, TFieldValid>(fieldValidat
     return (t) => {
         const fieldValidations = fieldValidate(t)
         return {
-            flatValidation: collectValidations(fieldValidations),
+            topValidationResult: collectValidations(fieldValidations),
             fieldValidations
         }
     }
