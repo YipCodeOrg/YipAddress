@@ -72,7 +72,10 @@ export enum ValidationSeverity{
     WARNING
 }
 
-export function printMessages(r: ValidationResult, severity: ValidationSeverity){
+export function printMessages(r: ValidationResult | null, severity: ValidationSeverity){
+    if(r === null){
+        return ""
+    }
     return processTargetArray(r, severity, a => a.join("; "))
 }
 
