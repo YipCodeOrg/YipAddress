@@ -1,14 +1,18 @@
 import { inverseIndexDuplicatesMap } from "../util/arrayUtil"
 import { addValidationMessage, ArrayValidationResult, collectValidations, hasErrors, hasWarnings, ItemValidationResult, newEmptyValidationResult, TopLevelArrayValidationFunction, ValidationResult, ValidationSeverity } from "./validation"
 
-export function validateNameNotBlank<T>(t: T, nameField: (t: T) => string | null | undefined): ValidationResult{
-    return validateStringNotBlank(t, nameField, "Name")
+export function validateNameNotBlank<T>(t: T, nameField: (t: T) => string | null | undefined,
+severity: ValidationSeverity): ValidationResult{
+    return validateStringNotBlank(t, nameField, "Name", severity)
 }
 
-export function validateStringNotBlank<T>(t: T, field: (t: T) => string | null | undefined, fieldDesc: string): ValidationResult{
+export function validateStringNotBlank<T>(t: T, field: (t: T) => string | null | undefined,
+fieldDesc: string, severity: ValidationSeverity): ValidationResult{
     const validation = newEmptyValidationResult()
     if(!field(t)){
-        validation.errors.push(`${fieldDesc} must not be blank`)
+        const message = severity === ValidationSeverity.ERROR ? `${fieldDesc} must not be blank`
+            : `${fieldDesc} is blank`
+        addValidationMessage(message, validation, severity)
     }
     return validation
 }

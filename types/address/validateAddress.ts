@@ -1,5 +1,5 @@
 import { liftFieldValidationToItemValidation, validateBasicArray, validateStringNotBlank } from "../../validate/commonValidations"
-import { ArrayValidationResult, ItemValidationResult, ValidationResult } from "../../validate/validation"
+import { ArrayValidationResult, ItemValidationResult, ValidationResult, ValidationSeverity } from "../../validate/validation"
 import { Address } from "./address"
 
 export type AddressFieldValidationResult = {
@@ -20,5 +20,5 @@ function fieldValidateAddress(ad: Address): AddressFieldValidationResult{
 function validateAddressLine(line: string): ValidationResult{
     
     //TODO: Enhance this beyond just checking for blanks
-    return validateStringNotBlank(line, s => s, "Address Line")
+    return validateStringNotBlank(line, s => s, "Address Line", ValidationSeverity.ERROR)
 }
