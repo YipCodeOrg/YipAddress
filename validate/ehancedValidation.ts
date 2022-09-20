@@ -12,6 +12,48 @@ export function lazyEnhancedValidation(validation: ValidationResult) : EnhancedV
     return new LazyEnhancedValidation(validation)
 }
 
+export function functionBackedEnhancedValidation(args: FunctionBackedEnhancedValidationArgs): EnhancedValidation{
+    return new FunctionBackedEnhancedValidation(args)
+}
+
+export type FunctionBackedEnhancedValidationArgs = {
+    validation: ValidationResult,
+    errorMessagesGenerator: () => string,
+    warningMessagesGenerator: () => string,
+    hasErrorsGenerator: () => boolean,
+    hasWarningsGenerator: () => boolean
+}
+
+class FunctionBackedEnhancedValidation implements EnhancedValidation {
+
+    #args: FunctionBackedEnhancedValidationArgs
+
+    constructor(args: FunctionBackedEnhancedValidationArgs){
+        this.#args = args
+    }
+
+    get validation(): ValidationResult{
+        return this.#args.validation
+    }
+
+    get errorMessages(): string{
+        return this.#args.errorMessagesGenerator()
+    }
+
+    get warningMessages(): string{
+        return this.#args.warningMessagesGenerator()
+    }
+
+    get hasErrors(): boolean{
+        return this.#args.hasErrorsGenerator()
+    }
+
+    get hasWarnings(): boolean{
+        return this.#args.hasWarningsGenerator()
+    }
+
+}
+
 class LazyEnhancedValidation implements EnhancedValidation {
     #validation: ValidationResult
     #errorMessages: Lazy<string>
