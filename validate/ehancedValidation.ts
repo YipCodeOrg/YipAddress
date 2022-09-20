@@ -8,6 +8,14 @@ export type EnhancedValidation = {
     hasWarnings: boolean
 }
 
+export function lazyEnhancedValidationOrNull(validation: ValidationResult | null){
+    if(validation === null){
+        return null
+    } else {
+        return lazyEnhancedValidation(validation)
+    }
+}
+
 export function lazyEnhancedValidation(validation: ValidationResult) : EnhancedValidation{
     return new LazyEnhancedValidation(validation)
 }
