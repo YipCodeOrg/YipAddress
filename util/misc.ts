@@ -14,3 +14,5 @@ export function timeoutPromiseOf<T>(t: T, delayMilis: number) : Promise<T>{
 export function timeoutRejectedPromiseOf<T>(delayMilis: number) : Promise<T>{
     return new Promise<T>((_, reject) => setTimeout(() => reject(), delayMilis))
 }
+
+export type ASyncFunction<Domain, Range> = (d: Domain) => Promise<Range>
