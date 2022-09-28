@@ -16,3 +16,18 @@ export function timeoutRejectedPromiseOf<T>(delayMilis: number) : Promise<T>{
 }
 
 export type ASyncFunction<Domain, Range> = (d: Domain) => Promise<Range>
+
+export function compose2<A, B, C>(f: (a: A) => B, g: (b: B) => C){
+    return (a: A) => g(f(a))
+}
+
+/** Lifts a potentially undefined function into a defined function, yielding a no-op for undefined. */
+export function liftUndefinedToNoOp<T>(f: ((_: T) => T) | undefined): (_: T) => T{
+    return function(t: T){
+        if(f !== undefined){
+            return f(t)
+        } else{
+            return t
+        }
+    }
+}
