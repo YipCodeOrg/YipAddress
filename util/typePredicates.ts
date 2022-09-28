@@ -15,7 +15,7 @@ export function areSimpleStringProperties(obj: any, properties: PropertyKey[]){
 }
 
 export function isString(obj: any): obj is string{
-    return (!!obj && (typeof obj === 'string' || obj instanceof String))
+    return ((!!obj || obj === "") && (typeof obj === 'string' || obj instanceof String))
 }
 
 export function isTypedArray<T>(obj: any, isElementCorrectType: (obj: any) => obj is T): obj is T[]{
