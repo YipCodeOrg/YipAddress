@@ -18,6 +18,10 @@ export function isString(obj: any): obj is string{
     return ((!!obj || obj === "") && (typeof obj === 'string' || obj instanceof String))
 }
 
+export function isBoolean(obj: any): obj is boolean{
+    return (typeof obj === 'boolean' || obj instanceof Boolean)
+}
+
 export function isTypedArray<T>(obj: any, isElementCorrectType: (obj: any) => obj is T): obj is T[]{
     if(!obj){
         return false
