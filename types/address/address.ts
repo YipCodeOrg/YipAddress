@@ -1,5 +1,5 @@
 import _ from "lodash"
-import { isSimpleProperty, isStringArray } from "../../../../util/typePredicates"
+import { isSimpleProperty, isStringArray } from "../../util/typePredicates"
 
 export type Address = {
     addressLines: string[],

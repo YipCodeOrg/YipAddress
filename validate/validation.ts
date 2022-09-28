@@ -1,4 +1,4 @@
-import { isStringArray } from "../../../util/typePredicates"
+import { isStringArray } from "../util/typePredicates"
 
 export type ValidationResult = {
     errors: string[],
