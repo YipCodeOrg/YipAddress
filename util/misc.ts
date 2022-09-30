@@ -21,6 +21,15 @@ export function compose2<A, B, C>(f: (a: A) => B, g: (b: B) => C){
     return (a: A) => g(f(a))
 }
 
+export function compose2PairDomain<A1, A2, B, C>(f: (a1: A1, a2: A2) => B, g: (b: B) => C){
+    return (a1: A1, a2: A2) => g(f(a1, a2))
+}
+
+export function compose2Higher<A, B, X, Y, Z>(f: (a: A) => (x: X) => Y, g: (b: B) => (y: Y) => Z)
+    : (a: A, b: B) => (x: X) => Z{
+    return (a: A, b: B) => compose2(f(a), g(b))
+}
+
 /** Lifts a potentially undefined function into a defined function, yielding a no-op for undefined. */
 export function liftUndefinedToNoOp<T>(f: ((_: T) => T) | undefined): (_: T) => T{
     return function(t: T){
