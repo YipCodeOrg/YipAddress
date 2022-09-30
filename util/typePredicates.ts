@@ -6,6 +6,10 @@ export function isSimpleProperty(obj: any, property: PropertyKey){
     return false
 }
 
+export function isNumber(obj: any): obj is number{
+    return typeof obj === 'number'
+}
+
 export function isSimpleStringProperty(obj: any, property: PropertyKey){
     return isSimpleProperty(obj, property) && isString(obj[property])
 }
