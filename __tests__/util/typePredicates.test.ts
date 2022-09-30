@@ -1,4 +1,4 @@
-import { isBoolean, isString } from "../../util/typePredicates"
+import { isBoolean, isNumber, isString } from "../../util/typePredicates"
 
 describe("isString", () => {
     describe("false", () => {
@@ -125,3 +125,79 @@ describe("isBoolean", () => {
         })
     })
 })
+
+describe("isNumber", () => {
+    describe("false", () => {
+        describe.each([
+            {
+                val: null,
+                desc: "Null object"
+            },
+            {
+                val: undefined,
+                desc: "Undefined object"
+            },
+            {
+                val: false,
+                desc: "Boolean"
+            },
+            {
+                val: new Date(),
+                desc: "Date"
+            },
+            {
+                val: {foo: "Hello", bar: "World"},
+                desc: "Simple object"
+            },
+        ])(
+            "$desc", ({val}) => {
+
+                it("returns false", () => {                    
+                    //Act
+                    const actual = isNumber(val)
+
+                    //Assert
+                    expect(actual).toBe(false)
+                })
+        })
+    })
+    describe("true", () => {
+        describe.each([
+            {
+                val: 0,
+                desc: "Zero Int"
+            },
+            {
+                val: 0.00,
+                desc: "Zero with decimal point"
+            },
+            {
+                val: 1232,
+                desc: "Non-zero nat"
+            },
+            {
+                val: -1232,
+                desc: "Negative int"
+            },
+            {
+                val: 2.234234234,
+                desc: "Non-zero with decimal"
+            },
+            {
+                val: -32.234,
+                desc: "Negative wtih decimal"
+            },
+        ])(
+            "$desc", ({val}) => {
+
+                it("returns true", () => {                    
+                    //Act
+                    const actual = isNumber(val)
+
+                    //Assert
+                    expect(actual).toBe(true)
+                })
+        })
+    })
+})
+
