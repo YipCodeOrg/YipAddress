@@ -53,3 +53,12 @@ export function liftUndefinedToNoOp<T>(f: ((_: T) => T) | undefined): (_: T) => 
         }
     }
 }
+
+export function liftSingleArg<X1, X2, Y1, Y2>(f: (x: X2) => Y1,
+    fx: (x: X1) => X2, fy: (y: Y1) => Y2): (x: X1) => Y2{
+        return function(x: X1){
+            const x2 = fx(x)
+            const y1 = f(x2)
+            return fy(y1)
+    }
+}
