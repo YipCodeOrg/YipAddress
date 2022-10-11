@@ -22,3 +22,18 @@ export function isStringMap<T>(obj: any,
     }
     return true
 }
+
+export function mapMapValues<TDomain, TRange>(map: StringMap<TDomain>,
+    mapper: (_ : TDomain) => TRange): StringMap<TRange>{
+
+        const targetMap: StringMap<TRange> = {}
+
+        for(let key in map){
+            let val = map[key]
+            if(val !== undefined){
+                targetMap[key] = mapper(val)
+            }
+        }
+
+        return targetMap
+}
