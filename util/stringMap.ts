@@ -24,14 +24,14 @@ export function isStringMap<T>(obj: any,
 }
 
 export function mapMapValues<TDomain, TRange>(map: StringMap<TDomain>,
-    mapper: (_ : TDomain) => TRange): StringMap<TRange>{
+    mapper: (val : TDomain, key: string) => TRange): StringMap<TRange>{
 
         const targetMap: StringMap<TRange> = {}
 
         for(let key in map){
             let val = map[key]
             if(val !== undefined){
-                targetMap[key] = mapper(val)
+                targetMap[key] = mapper(val, key)
             }
         }
 
