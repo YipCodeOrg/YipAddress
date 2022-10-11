@@ -1,5 +1,6 @@
 import _ from "lodash"
-import { isSimpleProperty, isStringArray } from "../../util/typePredicates"
+import { isStringMap, StringMap } from "../../util/stringMap"
+import { isNumber, isStringArray } from "../../util/typePredicates"
 
 export type Address = {
     addressLines: string[],
@@ -21,7 +22,7 @@ export function isAddress(obj: any): obj is Address{
 /**
  * Each line of an address can have any number of alises.
  */
-export type AliasMap = { [id: string] : number}
+export type AliasMap = StringMap<number>
 
 export function removeAlias(map: AliasMap, alias: string){
     delete map[alias]
@@ -41,25 +42,7 @@ export const emptyAddress: Address = {
 }
 
 export function isAliasMap(obj: any): obj is AliasMap{
-    if(!obj){
-        return false
-    }
-    const symbolProps = Object.getOwnPropertySymbols(obj)
-    if(symbolProps.length > 0){
-        console.log("Symbol props")
-        return false
-    }
-    for(var prop of Object.getOwnPropertyNames(obj)){
-        if(!isSimpleProperty(obj, prop)){
-            console.log("Not simple prop")
-            return false
-        }
-        const val = obj[prop]
-        if(!Number.isFinite(val)){
-            return false
-        }
-    }
-    return true
+    return isStringMap<number>(obj, isNumber)    
 }
 
 export function shallowCopyUpdateLine(address: Address, index: number, content: string) : Address{
