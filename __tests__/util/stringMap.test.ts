@@ -1,4 +1,4 @@
-import { mapMapValues } from "../../util/stringMap"
+import { hasKey, mapMapValues } from "../../util/stringMap"
 
 describe("mapMapValues", () => {    
     
@@ -47,6 +47,43 @@ describe("mapMapValues", () => {
                 //Assert
                 expect(actual).toEqual(expected)
             })
+    })
+})
+
+describe("hasKey", () => {
+    
+    describe("Key exists", () => {
+        it("Returns true", () => {
+            //Arrange
+            const map = {
+                k: 1,
+                v: 2,
+                u: 3
+            }
+
+            //Act
+            const actual = hasKey(map, "v")
+
+            //Assert
+            expect(actual).toBe(true)
+        })
+    })
+
+    describe("Key does not exist", () => {
+        it("Returns false", () => {
+            //Arrange
+            const map = {
+                k: 1,
+                v: 2,
+                u: 3
+            }
+
+            //Act
+            const actual = hasKey(map, "Non-existent")
+
+            //Assert
+            expect(actual).toBe(false)
+        })
     })
 })
 

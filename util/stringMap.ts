@@ -37,3 +37,7 @@ export function mapMapValues<TDomain, TRange>(map: StringMap<TDomain>,
 
         return targetMap
 }
+
+export function hasKey<T>(map: StringMap<T>, key: string): boolean{
+    return (key in map)
+}
